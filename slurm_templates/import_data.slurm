@@ -13,7 +13,7 @@
 # Files pattern
 #SBATCH --job-name=<job_name>
 #SBATCH -e %x_%j.err  #pattern is jobname_jobid
-#SBATCH -o %x_%j.out
+#SBATCH -o %x_%j.out  #pattern is jobname_jobid
 
 # Computing resources
 #SBATCH --partition=skylake  # partition with cpu only and /scratch available
@@ -21,9 +21,16 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=96:00:00
 
-# default example copy data from /envau/work  to /scratch/apron/data/datasets
-rsync -avzh --progress <frioul_login>@frioul.int.univ-amu.fr:/envau/work/<to_be_completed> /scratch/<mesocentre_login>/data/datasets/
+# default general syntax (we already are logged in login.mesocentre.univ-amu.fr)
+rsync -avzh --progress <login_host_source>@<host_source>:<path_source> <path_dest>
 
-# optimised data copy (use this if you want to copy >1G0 data volume)
+# default recommended syntax
+rsync -avzh --progress <login>@<host>:<path> /scratch/<mesocentre_login>/<path_dest>
+
+#default optimised syntax (if you need to copy >1G0 data)
+rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x" <login>@<host>:<path> /scratch/<mesocentre_login>/<path_dest>
+
+# a practical example to copy data from /envau to mesocentre
 rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x"
-<frioul_login>@frioul.int.univ-amu.fr:/envau/work/<to_be_completed> /scratch/<mesocentre_login>/data/dataset
+<login>@<frioul.int.univ-amu.fr>:/envau/<path_source>
+/scratch/<mesocentre_login>/<path_dest>
