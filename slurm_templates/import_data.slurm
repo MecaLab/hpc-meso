@@ -24,11 +24,9 @@
 # default general syntax (we already are logged in login.mesocentre.univ-amu.fr)
 rsync -avzh --progress <login_host_source>@<host_source>:<path_source> <path_dest>
 
-# default recommended syntax
-rsync -avzh --progress <login>@<host>:<path> /scratch/<mesocentre_login>/<path_dest>
-
-#default optimised syntax (if you need to copy >1G0 data)
-rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x" <login>@<host>:<path> /scratch/<mesocentre_login>/<path_dest>
+# default optimised syntax ((we already are logged in login.mesocentre.univ-amu.fr and
+# need to copy >1G0 data)
+rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x" <login>@<host>:<path> <path_dest>
 
 # a practical example to copy data from /envau to mesocentre
 rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x"

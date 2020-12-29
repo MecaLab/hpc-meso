@@ -80,21 +80,25 @@ file. Know that `rsync` is not optimized (very slow) for huge data through Wide 
 # Files pattern
 #SBATCH --job-name=<job_name>
 #SBATCH -e %x_%j.err  #pattern is jobname_jobid
-#SBATCH -o %x_%j.out
+#SBATCH -o %x_%j.out  #pattern is jobname_jobid
 
 # Computing resources
 #SBATCH --partition=skylake  # partition with cpu only and /scratch available
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1 # rsync does not handle multicpu properly 
+#SBATCH --cpus-per-task=1
 #SBATCH --time=96:00:00
 
+# default general syntax (we already are logged in login.mesocentre.univ-amu.fr)
+rsync -avzh --progress <login_host_source>@<host_source>:<path_source> <path_dest>
 
+# default optimised syntax ((we already are logged in login.mesocentre.univ-amu.fr and
+# need to copy >1G0 data)
+rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x" <login>@<host>:<path> <path_dest>
 
-# default example copy data from /envau/work  to /scratch/apron/data/datasets
-rsync -avzh --progress <frioul_login>@frioul.int.univ-amu.fr:/envau/work/<to_be_completed> /scratch/<mesocentre_login>/data/datasets/
+# a practical example to copy data from /envau to mesocentre
+rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x" 
+<login>@<frioul.int.univ-amu.fr>:/envau/<path_source>
+/scratch/<mesocentre_login>/<path_dest>
 
-# optimised data copy (use this if you want to copy >1G0 data volume)
-rsync -aHAXxv --numeric-ids --delete --progress -e "ssh -T -o Compression=no -x"
-<frioul_login>@frioul.int.univ-amu.fr:/envau/work/<to_be_completed> /scratch/<mesocentre_login>/data/dataset
 ```
 
