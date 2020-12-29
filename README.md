@@ -49,7 +49,8 @@ directory contains ``.slurm`` scripts with preset values.
 #SBATCH --cpus-per-task=5
 #SBATCH --time=96:00:00
 ```
-
+## To slum master and beyond
++ [conditionnal jobs execution](http://www.idris.fr/jean-zay/cpu/jean-zay-cpu-exec_cascade.html)
 ## Data importation
 Users are allowed to transfer data from and to the mesocentre 
 using ``scp``, ``rsync`` and ``sftp`` commands. Data transfer can be performed in two 
